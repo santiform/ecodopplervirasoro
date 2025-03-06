@@ -22,6 +22,8 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/index', [VirasoroController::class, 'index'])->name('index');
 
+    Route::get('/pacientes', [VirasoroController::class, 'pacientes'])->name('pacientes');
+
 
 
 });
