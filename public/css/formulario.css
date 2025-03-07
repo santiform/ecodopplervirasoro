@@ -1,0 +1,287 @@
+/* Fondo de la página */
+body {
+    background-color: #056074;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+/* Asegura que el título siempre esté arriba */
+.titulo {
+    text-align: center;
+    padding: 20px;
+    background-color: #00B8E1;
+    color: white;
+    font-size: 24px;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+}
+
+/* Contenedor para centrar el formulario */
+.contenedor {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centra el formulario */
+    justify-content: center;
+    padding: 20px;
+}
+
+/* Formulario */
+form {    
+    padding: 20px;
+    border-radius: 8px;
+    border: 5px solid white;
+    width: 450px;
+    background-color: white;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Etiquetas */
+label {
+    font-weight: bold;
+    display: block;
+    margin-top: 10px;
+    color: #056074;
+}
+
+/* Campos de entrada */
+input {
+    width: 95%;
+    padding: 8px;
+    margin-top: 5px;
+    margin-bottom: 13px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+/* Botón */
+button {
+    background-color: #00B8E1;
+    color: white;
+    border: none;
+    padding: 10px;
+    width: 100%;
+    margin-top: 30px;
+    border-radius: 50px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 15px;
+}
+
+button:hover {
+    background-color: #056074;
+}
+
+/* Título */
+h1 {
+    color: #00dcf1;
+    margin-top: 0.2rem;
+}
+
+/* Mensaje de éxito */
+.alerta-success {
+    color: white;
+    font-weight: bold;
+    font-size: 22px;
+    margin-bottom: 2rem;
+}
+
+/* Responsividad */
+@media (max-width: 768px) {
+    form {
+        width: 100%;
+        max-width: 90%;
+    }
+    table.dataTable {
+        font-size: 12px;
+    }
+}
+
+
+
+
+
+
+/* Contenedor general */
+.contenedor {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centra el formulario */
+    justify-content: flex-start;
+    padding: 20px;
+    min-height: 100vh;
+}
+
+/* Estilo para el título */
+h1 {
+    color: #00dcf1;
+    margin-bottom: 20px;
+}
+
+/* Estilo del formulario */
+.form {
+    padding: 10px;
+    border-radius: 8px;
+    border: 20px solid white;
+    width: 450px;
+    background-color: white;
+}
+
+/* Estilo de las etiquetas */
+label {
+    font-weight: bold;
+    display: block;
+    margin-top: 10px;
+}
+
+/* Estilo de los inputs */
+input {
+    width: 95%;
+    padding: 8px;
+    margin-top: 5px;
+    margin-bottom: 13px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+/* Estilo del botón */
+button {
+    background-color: #00B8E1;
+    color: white;
+    border: none;
+    padding: 10px;
+    width: 100%;
+    margin-top: 30px;
+    border-radius: 50px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 15px;
+}
+
+button:hover {
+    background-color: #056074;
+}
+
+/* Estilo para la alerta centrada */
+.alerta-success {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); /* Centra el elemento */
+    background-color: #4CAF50; /* Color de fondo de la alerta */
+    color: white;
+    padding: 15px;
+    border-radius: 5px;
+    z-index: 1000; /* Asegura que la alerta esté por encima de otros contenidos */
+    font-size: 16px;
+    text-align: center;
+    display: none; /* Ocultar la alerta por defecto */
+}
+
+.alerta-success.visible {
+    display: block; /* Muestra la alerta cuando se agrega la clase 'visible' */
+}
+
+/* Estilo para el modal de confirmación */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5); /* Fondo semi-transparente */
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    width: 300px;
+    text-align: center;
+}
+
+.modal button {
+    border: none;
+    padding: 10px;
+    border-radius: 50px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 14px;
+    margin-top: 10px;
+    width: 100%;
+}
+
+.modal button.confirmar {
+    background-color: #4CAF50; /* Verde para confirmar */
+    color: white;
+    transition: background-color 0.3s ease; /* Transición suave */
+}
+
+.modal button.confirmar:hover {
+    background-color: #45a049; /* Un verde más oscuro para el hover */
+}
+
+.modal button.cancelar {
+    background-color: #f44336; /* Rojo para cancelar */
+    color: white;
+    transition: background-color 0.3s ease; /* Transición suave */
+}
+
+.modal button.cancelar:hover {
+    background-color: #e53935; /* Un rojo más oscuro para el hover */
+}
+
+
+/* Estilo para la barra de navegación o header si es necesario */
+header {
+    background-color: #056074;
+    color: white;
+    padding: 10px;
+    text-align: center;
+    font-size: 20px;
+}
+
+footer {
+    text-align: center;
+    padding: 10px;
+    background-color: #056074;
+    color: white;
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+}
+
+/* Estilos de responsividad */
+@media (max-width: 768px) {
+    .form {
+        width: 100%;
+        padding: 15px;
+    }
+
+    button {
+        font-size: 14px;
+    }
+
+    .modal-content {
+        width: 90%;
+    }
+}
+
+.session-success {
+    background-color: #c7ffbf;
+    padding: 9px;
+    padding-inline: 80px;
+    border-radius: 8px;
+    color: green;
+    font-size: 16px;
+    font-weight: bold;
+    margin-top: -0.2rem;
+    margin-bottom: 1.8rem;
+    font-weight: 400 !important;
+}

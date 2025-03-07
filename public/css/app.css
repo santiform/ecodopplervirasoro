@@ -7,3 +7,118 @@
 * {
 	font-family: "Poppins", sans-serif;;
 }
+
+
+h1 {
+    color: white;
+    text-align: center;
+    font-weight: 600;
+    font-size: 33px;
+    margin-block: 1.5rem;
+}
+
+h1 i {
+    margin-left: 10px; /* Añadir espacio entre el título y el ícono */
+    font-size: 33px;   /* Ajustar el tamaño del ícono */
+    color: white;    /* Puedes cambiar el color si lo deseas */
+    background-color: transparent;
+}
+
+h1 i:hover {
+    color: black;
+}
+
+body {
+	background-color: #056074;
+	margin: 0;
+    padding: 0;
+    padding-bottom: 1rem;
+}
+ 
+/* Barra de navegación */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+    background-color: #00B8E1; /* Color de fondo */
+    border-bottom: 1px solid #056074;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Sombra hacia abajo */
+}
+
+/* Nombre de la aplicación */
+.navbar-title {
+    font-size: 18px;
+    color: white;
+    font-weight: bold;
+    text-align: center;
+}
+
+/* Botones de navegación */
+.navbar-btn {
+    text-decoration: none;
+    color: #056074;
+    background-color: transparent;
+    padding: 8px 12px;
+    font-size: 14px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+    background-color: white;
+}
+
+/* Iconos dentro de los botones */
+.navbar-btn i {
+    margin-right: 5px;
+}
+
+/* Efecto hover en los botones */
+.navbar-btn:hover {
+    color: white;
+    background-color: #056074;
+}
+
+.app {
+	font-size: 24px;
+	margin-bottom: -0.8rem;
+	margin-top: 0.2rem;
+}
+
+.version {
+	color: black;
+	font-weight: 400;
+	font-size: 15px;
+	margin-bottom: 0.5rem;
+}
+
+
+
+.titulo {
+    background-color: #0086a4;
+    width: 400px;
+    max-width: 90vw;
+    margin: 0 auto;
+    margin-block: 1.5rem;
+    border-radius: 10px;
+    border: 1px solid white;
+}
+
+
+
+/* Responsividad para pantallas pequeñas */
+@media (max-width: 768px) {
+    .navbar {
+        padding: 8px 15px;
+    }
+
+    .navbar-title {
+        font-size: 16px;
+    }
+
+    .navbar-btn {
+        font-size: 12px;
+        padding: 6px 10px;
+    }
+}

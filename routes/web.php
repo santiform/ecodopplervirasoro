@@ -7,7 +7,11 @@ use App\Http\Controllers\VirasoroController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 
 Route::get('/', function () {
-    return view('welcome');
+    if (Auth::check()) {
+        return redirect()->route('index');
+    }
+
+    return redirect()->route('login');
 });
 
 Route::get('login', [AuthenticatedSessionController::class, 'create'])
@@ -23,6 +27,14 @@ Route::middleware('auth')->group(function () {
     Route::get('/index', [VirasoroController::class, 'index'])->name('index');
 
     Route::get('/pacientes', [VirasoroController::class, 'pacientes'])->name('pacientes');
+
+    Route::get('/pacientes/nuevo', [VirasoroController::class, 'pacientesNuevo'])->name('pacientesNuevo');
+
+    Route::post('/pacientes/nuevo/guardar', [VirasoroController::class, 'pacientesNuevoGuardar'])->name('pacientesNuevoGuardar');
+
+    Route::get('/paciente/{id}', [VirasoroController::class, 'pacienteLegajo'])->name('pacienteLegajo');
+
+
 
 
 

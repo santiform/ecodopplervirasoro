@@ -10,28 +10,32 @@
     flex-direction: column; /* Los elementos se apilarán verticalmente */
     justify-content: center; /* Centra los elementos verticalmente dentro del contenedor */
     align-items: center; /* Centra los elementos horizontalmente dentro del contenedor */
-    height: 50vh; /* Ajusta la altura de la mitad de la pantalla */
+    
 }
 
 
 /* Estilos opcionales */
 .half:nth-child(1) {
     background-color: rgba(0, 62, 75, 0.7); /* Color para la mitad superior */
+    height: 25vh; /* Ajusta la altura de la mitad de la pantalla */
 }
 
 .half:nth-child(2) {
     background-color: #000; /* Color para la mitad inferior */
+    height: 67vh; /* Ajusta la altura de la mitad de la pantalla */
 }
 
 h1 {
     color: #A5E7F6;
-    font-size: 45px;
+    font-size: 40px;
+    font-weight: 500;
 }
 
 h2 {
     color: white;
-    font-size: 35px;
+    font-size: 30px;
     margin-top: -1.5rem;
+    font-weight: 500;
 }
 
 
@@ -74,8 +78,8 @@ h2 {
 }
 
 .round-button {
-    width: 180px;
-    height: 180px;
+    width: 130px;
+    height: 130px;
     border-radius: 50%;
     border: 2px solid transparent;
     background-color: #A5E7F6;
@@ -91,11 +95,11 @@ h2 {
 .round-button:hover {
     background-color: black;
     color: #A5E7F6;
-    border: 2px solid white;
+    border: 3px solid white;
 }
 
 .round-button i {
-    font-size: 90px;
+    font-size: 70px;
 }
 
 /* Responsividad */

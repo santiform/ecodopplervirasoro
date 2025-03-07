@@ -36,6 +36,10 @@
         background-color: rgba(108, 208, 232, 0.5); /* Color con opacidad */
         z-index: -1; /* Asegura que el color se superponga a la imagen */
     }
+
+    a {
+        text-decoration: none;
+    }
 </style>
 
 <div class="index-container">
@@ -48,8 +52,10 @@
             <div class="bottom">
                 <div class="button-container">
                     <div class="button-item">
-                        <button class="round-button"><i class="fa-solid fa-user"></i></button>
-                        <p>Pacientes</p>
+                        <a href="{{ route('pacientes') }}">
+                            <button class="round-button"><i class="fa-solid fa-user"></i></button>
+                            <p>Pacientes</p>
+                        </a>
                     </div>
                     <div class="button-item">
                         <button class="round-button"><i class="fa-solid fa-user-plus"></i></button>
