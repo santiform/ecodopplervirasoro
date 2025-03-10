@@ -122,3 +122,21 @@ body {
         padding: 6px 10px;
     }
 }
+
+.nuevo-elemento {
+    text-align: center;
+    color: white;
+    margin: 0 auto;
+    margin-block: 2.5rem;
+    font-weight: 300;
+    background-color: #074552;
+    border-radius: 8px;
+    padding-block: 0.1rem;
+    padding-inline: 8px;
+    max-width: 790px;
+}
+
+.nuevo-elemento a {
+    text-decoration: underline;
+    color: #00dcf1;
+}

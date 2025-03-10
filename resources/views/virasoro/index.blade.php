@@ -58,8 +58,10 @@
                         </a>
                     </div>
                     <div class="button-item">
-                        <button class="round-button"><i class="fa-solid fa-user-plus"></i></button>
-                        <p>Nuevo Paciente</p>
+                        <a href="{{ route('pacientesNuevo') }}">
+                            <button class="round-button"><i class="fa-solid fa-user-plus"></i></button>
+                            <p>Nuevo Paciente</p>
+                        </a>    
                     </div>                    
                     <div class="button-item">
                         <button class="round-button"><i class="fa-solid fa-user-doctor"></i></button>

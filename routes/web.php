@@ -34,8 +34,19 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/paciente/{id}', [VirasoroController::class, 'pacienteLegajo'])->name('pacienteLegajo');
 
+    Route::get('/paciente/{id}/editar', [VirasoroController::class, 'pacienteEditar'])->name('pacienteEditar');
 
+    Route::put('/paciente/{id}/editar/guardar', [VirasoroController::class, 'pacienteEditarGuardar'])->name('pacienteEditarGuardar');
 
+    Route::delete('/paciente/{id}/eliminar', [VirasoroController::class, 'pacienteEliminar'])->name('pacienteEliminar');
+
+    Route::get('/paciente/{id}/nuevo-estudio', [VirasoroController::class, 'pacienteNuevoEstudio'])->name('pacienteNuevoEstudio');
+
+    Route::get('/paciente/{id}/nuevo-estudio/{estudio_id}', [VirasoroController::class, 'pacienteNuevoEstudio2'])->name('pacienteNuevoEstudio2');
+
+    Route::post('/paciente/nuevo-estudio/guardar', [VirasoroController::class, 'pacienteNuevoEstudio3'])->name('pacienteNuevoEstudio3');
+
+    Route::get('/estudio/{id}', [VirasoroController::class, 'estudioVer'])->name('estudioVer');
 
 
 });

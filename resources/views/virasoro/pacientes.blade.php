@@ -2,6 +2,7 @@
 
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
 <link rel="stylesheet" href="{{ asset('css/tabla.css') }}">
+<link rel="stylesheet" href="{{ asset('css/alertas.css') }}">
 
 <div class="contenedor">
 
@@ -12,9 +13,15 @@
         </h1>
     </div>
 
-    @if (session('success'))
-        <div style="color: green;">
-            {{ session('success') }}
+    @if (session('deleted'))
+        <div class="session-deleted">
+            {{ session('deleted') }}
+        </div>
+    @endif
+
+    @if (session('estudioSuccess'))
+        <div class="session-success">
+            {{ session('estudioSuccess') }}
         </div>
     @endif
 
@@ -45,20 +52,25 @@
 
                 <td >
                     <div style="display: flex; justify-content: space-around; ">
-                        <!-- Imagen para ver -->
+
                         <a href="{{ route('pacienteLegajo', ['id' => $paciente->id]) }}">
                             <img src="{{ asset('img/ver.png') }}" alt="Ver" width="30" height="30">
                         </a>
 
-                        <!-- Imagen para editar -->
-                        <a href="">
+                        <a href="{{ route('pacienteEditar', ['id' => $paciente->id]) }}">
                             <img src="{{ asset('img/editar.png') }}" alt="Editar" width="30" height="30">
                         </a>
 
-                        <!-- Imagen para eliminar -->
-                        <a href="" onclick="return confirm('¿Estás seguro de que deseas eliminar este paciente?')">
-                            <img src="{{ asset('img/borrar.png') }}" alt="Eliminar" width="30" height="30">
+                        <a href="{{ route('pacienteNuevoEstudio', ['id' => $paciente->id]) }}">
+                            <img src="{{ asset('img/estudio.png') }}" alt="Nuevo Estudio" width="30" height="30">
                         </a>
+
+                        <a href="{{ route('pacienteEliminar', $paciente->id) }}" 
+                           class="btn-eliminar" 
+                           onclick="event.preventDefault(); mostrarModal(this)">
+                            <img src="{{ asset('img/borrar.png') }}" alt="Eliminar" width="30" height="30">
+                        </a>    
+
                     </div>
                 </td>
 
@@ -98,4 +110,59 @@ $(document).ready(function() {
 });
 </script>
 
+<!-- Modal de Confirmación -->
+<div class="modal">
+    <div class="modal-content">
+        <p>¿Estás seguro de que deseas eliminar este paciente?</p>
+        <button class="confirmar" onclick="confirmarAccion()">Sí, Confirmar</button>
+        <button class="cancelar" onclick="cerrarModal()">No, Cancelar</button>
+    </div>
+</div>
+
 @include('layouts.includes.footer')
+
+<script>
+function mostrarModal(link) {
+    // Mostrar el modal
+    document.querySelector('.modal').style.display = 'flex';
+    // Establecer la URL del enlace en el botón de confirmación
+    document.querySelector('.confirmar').setAttribute('data-href', link.href);
+}
+
+function cerrarModal() {
+    document.querySelector('.modal').style.display = 'none';
+}
+
+function confirmarAccion() {
+    // Obtener la URL del enlace
+    let link = document.querySelector('.confirmar').getAttribute('data-href');
+    
+    // Crear un formulario para enviar la solicitud DELETE
+    let form = document.createElement('form');
+    form.method = 'POST';
+    form.action = link;  // Asignamos la URL del enlace (ruta para eliminar al paciente)
+
+    // Crear el campo CSRF
+    let csrfField = document.createElement('input');
+    csrfField.type = 'hidden';
+    csrfField.name = '_token';
+    csrfField.value = '{{ csrf_token() }}';
+
+    // Crear el campo _method para que Laravel reconozca que es una solicitud DELETE
+    let methodField = document.createElement('input');
+    methodField.type = 'hidden';
+    methodField.name = '_method';
+    methodField.value = 'DELETE';
+
+    // Agregar los campos al formulario
+    form.appendChild(csrfField);
+    form.appendChild(methodField);
+
+    // Agregar el formulario al body y enviarlo
+    document.body.appendChild(form);
+    form.submit();
+
+    // Cerrar el modal
+    cerrarModal();
+}
+</script>

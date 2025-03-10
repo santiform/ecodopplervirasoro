@@ -1,0 +1,148 @@
+        body {
+            padding-bottom: 0;
+        }
+        .contenedor {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            padding: 20px;
+            padding-bottom: 0;
+            margin-bottom: 3.5rem;
+            margin-top: 2rem;
+        }
+
+        /* Alineación en pantallas grandes */
+        @media (min-width: 768px) {
+            .contenedor {
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: flex-start;
+            }
+        }
+
+        /* Ajuste para pantallas grandes */
+        @media (min-width: 1024px) {
+            .legajo {
+                max-width: 60%;  /* Reduce el tamaño */
+                margin: auto;    /* Centra horizontalmente */
+            }
+        }
+
+        /* Ajuste para pantallas grandes */
+        @media (min-width: 1400px) {
+            .legajo {
+                max-width: 45%;  /* Reduce el tamaño */
+                margin: auto;    /* Centra horizontalmente */
+            }
+        }
+
+        /* Estilos del legajo */
+        .legajo {
+            padding: 25px;
+            border-radius: 8px;
+            background: #65d0e8; /* Azul claro */
+            flex: 1;
+        }
+
+        .legajo h1 {
+            margin-bottom: 10px;
+            color: #056074;
+            margin-top: 0;
+        }
+
+        .legajo p {
+            margin: 5px 0;
+            color: white;
+            font-weight: 500;
+            font-size: 20px;
+        }
+
+        .legajo strong {
+            color: #056074;
+        }
+
+        /* Estilos de los botones */
+        .botones {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .boton {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: #00b8e1; /* Verde */
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            cursor: pointer;
+            font-size: 18px;
+            border-radius: 8px;
+            transition: background 0.3s ease;
+            text-decoration: none;
+            text-align: center;
+        }
+
+        .boton:hover {
+            background: white;
+            color: #00b8e1;
+        }
+
+        .boton i {
+            font-size: 24px;
+        }
+
+        .contenedor-icono {
+            display: flex;
+            align-items: center; /* Alinea verticalmente */
+            gap: 10px; /* Espacio entre el icono y el texto */
+            margin-bottom: 2rem;
+
+        }
+
+        .circulo {
+            width: 100px;
+            height: 100px;
+            background-color: #00b8e1;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 60px;
+            transition: background 0.3s ease;
+        }
+
+
+        .nombre {
+            font-size: 28px;
+            font-weight: bold;
+            color: #056074;
+        }
+
+
+        .titulo-estudio {
+            width: 500px;
+            margin: 0 auto;
+            margin-block: 1.5rem;
+        }
+
+        .titulo-estudio h1 {
+            font-size: 26px;
+            font-weight: 400;
+        }
+
+        .titulo-estudio i {
+            font-size: 25px;
+        }
+
+        .contenedor2 {
+            background-color: #0d505f;
+            padding-inline: 20px;
+            padding-top: 1px;
+            padding-bottom: 1rem;
+            margin-bottom: 0;
+            box-shadow: 0 -6px 12px rgba(0, 0, 0, 0.3); /* Sombra hacia abajo */
+        }
+

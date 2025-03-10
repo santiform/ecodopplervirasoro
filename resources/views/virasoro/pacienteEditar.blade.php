@@ -4,38 +4,43 @@
 <link rel="stylesheet" href="{{ asset('css/alertas.css') }}">
 
 <div class="contenedor">
-    <h1>Agregar nuevo paciente</h1>
+    <h1>Editar paciente</h1>
 
-    @if (session('success'))
-        <div class="session-success">
-            {{ session('success') }}
+    @if (session('edited'))
+        <div class="session-edited">
+            {{ session('edited') }}
         </div>
     @endif
 
-    <form class="form" id="pacienteForm" action="{{ route('pacientesNuevoGuardar') }}" method="POST" onsubmit="return abrirModal(event)">
+    <form class="form" id="pacienteForm" action="{{ route('pacienteEditarGuardar', $paciente->id) }}" method="POST" onsubmit="return abrirModal(event)">
         @csrf
+        @method('PUT') {{-- Método PUT para actualización --}}
          
         <label for="apellido">Apellido</label>
-        <input type="text" id="apellido" name="apellido" required>
-        <label for="nombre">Nombre</label>
-        <input type="text" id="nombre" name="nombre" required>
-        <label for="dni">DNI</label>
-        <input type="text" id="dni" name="dni" required>
-        <label for="celular">Celular</label>
-        <input type="tel" id="celular" name="celular" required>
-        <label for="nacimiento">Nacimiento</label>
-        <input type="date" id="nacimiento" name="nacimiento" required>
-        <label for="obra_social">Obra Social</label>
-        <input type="text" id="obra_social" name="obra_social" required>
+        <input type="text" id="apellido" name="apellido" value="{{ $paciente->apellido }}" required>
 
-        <!-- Botón de envío que abrirá el modal -->
-        <button type="submit" id="submitButton">ACEPTAR</button>
+        <label for="nombre">Nombre</label>
+        <input type="text" id="nombre" name="nombre" value="{{ $paciente->nombre }}" required>
+
+        <label for="dni">DNI</label>
+        <input type="text" id="dni" name="dni" value="{{ $paciente->dni }}" required>
+
+        <label for="celular">Celular</label>
+        <input type="tel" id="celular" name="celular" value="{{ $paciente->celular }}" required>
+
+        <label for="nacimiento">Nacimiento</label>
+        <input type="date" id="nacimiento" name="nacimiento" value="{{ $paciente->nacimiento }}" required>
+
+        <label for="obra_social">Obra Social</label>
+        <input type="text" id="obra_social" name="obra_social" value="{{ $paciente->obra_social }}" required>
+
+        <button type="submit" id="submitButton">GUARDAR CAMBIOS</button>
     </form>
 </div>
 
 <div class="modal">
     <div class="modal-content">
-        <p>¿Estás seguro de que deseas realizar esta acción?</p>
+        <p>¿Estás seguro de que deseas guardar los cambios?</p>
         <button class="confirmar" onclick="confirmarAccion()">Sí, Confirmar</button>
         <button class="cancelar" onclick="cerrarModal()">No, Cancelar</button>
     </div>
