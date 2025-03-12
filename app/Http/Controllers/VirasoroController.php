@@ -5,6 +5,10 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\File;
+
+
+use PDF;
 
 
 class VirasoroController extends Controller
@@ -196,14 +200,7 @@ class VirasoroController extends Controller
         return redirect()->route('pacientes')->with('estudioSuccess', 'Estudio agregado correctamente ✔');
     }
 
-
-
-
-
-
-
-
-    public function estudioVer($id) {
+    public function pacienteEditarEstudio($id) {
 
         $estudio = DB::table('estudios')
             ->join('pacientes', 'estudios.id_paciente', '=', 'pacientes.id')
@@ -211,13 +208,137 @@ class VirasoroController extends Controller
             ->where('estudios.id', $id)
             ->select(
                 'estudios.*', 
-                'pacientes.apellido', 
-                'pacientes.nombre', 
+                'pacientes.apellido as paciente_apellido', 
+                'pacientes.nombre as paciente_nombre', 
                 'tipos_estudios.nombre as tipo_estudio_nombre'
             )
             ->first();
 
-        return view('virasoro.estudioVer', compact('estudio'));
+        $paciente = DB::table('pacientes')->where('id', $estudio->id_paciente)->first();
+
+        $tipo_estudio =  DB::table('tipos_estudios')->where('id', $estudio->id_tipo_estudio)->first();    
+
+        return view('virasoro.pacienteEditarEstudio', compact('estudio', 'paciente', 'tipo_estudio'));
+    }   
+
+    public function pacienteEditarEstudio2(Request $request) {
+
+        DB::table('estudios')
+            ->where('id', $request->input('estudio_id'))
+            ->update([
+                'fecha' => $request->input('fecha'),
+                'solicitante' => $request->input('solicitante'),
+                'informe' => $request->input('informe'),
+                'updated_at' => now(),
+            ]);
+
+        return redirect()->back()->with('edited', 'Estudio editado correctamente ✔');    
+
+    }    
+
+    public function estudioVer($id) {
+        $estudio = DB::table('estudios')
+            ->join('pacientes', 'estudios.id_paciente', '=', 'pacientes.id')
+            ->join('tipos_estudios', 'estudios.id_tipo_estudio', '=', 'tipos_estudios.id')
+            ->where('estudios.id', $id)
+            ->select(
+                'estudios.*', 
+                'pacientes.apellido as paciente_apellido', 
+                'pacientes.nombre as paciente_nombre', 
+                'tipos_estudios.nombre as tipo_estudio_nombre'
+            )
+            ->first();
+
+        $estudio->fecha = Carbon::parse($estudio->fecha)->format('d/m/Y');      
+
+        $baseUrl = asset('');    
+
+        $imagenes = DB::table('multimedias')
+                  ->where('id_estudio', $id)
+                  ->pluck('url')
+                  ->map(fn($url) => $baseUrl . $url);
+
+        return view('virasoro.estudioVer', compact('estudio', 'imagenes'));
     }
 
+    public function estudioDescargar($id) {
+        $estudio = DB::table('estudios')
+            ->join('pacientes', 'estudios.id_paciente', '=', 'pacientes.id')
+            ->join('tipos_estudios', 'estudios.id_tipo_estudio', '=', 'tipos_estudios.id')
+            ->where('estudios.id', $id)
+            ->select(
+                'estudios.*',
+                'pacientes.apellido as paciente_apellido',
+                'pacientes.nombre as paciente_nombre',
+                'tipos_estudios.nombre as tipo_estudio_nombre'
+            )
+            ->first();
+
+        $estudio->fecha = Carbon::parse($estudio->fecha)->format('d/m/Y');    
+
+        $baseUrl = asset('');    
+
+        $imagenes = DB::table('multimedias')
+            ->where('id_estudio', $id)
+            ->pluck('url')
+            ->map(function($url) use ($baseUrl) {
+                return url($url);  // Generar URL completa
+            });
+
+        $pdf = PDF::loadView('virasoro.estudioPdf', [
+            'estudio' => $estudio,
+            'imagenes' => $imagenes
+        ]);
+
+        $fecha = Carbon::createFromFormat('d/m/Y', $estudio->fecha)->format('d-m-Y');
+
+        return $pdf->download($estudio->paciente_apellido . " " . $estudio->paciente_nombre . " (" . $estudio->tipo_estudio_nombre . " " . $fecha . ').pdf');
+    }
+
+    public function estudioImprimir($id) {
+        $estudio = DB::table('estudios')
+            ->join('pacientes', 'estudios.id_paciente', '=', 'pacientes.id')
+            ->join('tipos_estudios', 'estudios.id_tipo_estudio', '=', 'tipos_estudios.id')
+            ->where('estudios.id', $id)
+            ->select(
+                'estudios.*',
+                'pacientes.apellido as paciente_apellido',
+                'pacientes.nombre as paciente_nombre',
+                'tipos_estudios.nombre as tipo_estudio_nombre'
+            )
+            ->first();
+
+        $estudio->fecha = Carbon::parse($estudio->fecha)->format('d/m/Y');    
+
+        $baseUrl = asset('');    
+
+        $imagenes = DB::table('multimedias')
+            ->where('id_estudio', $id)
+            ->pluck('url')
+            ->map(function($url) use ($baseUrl) {
+                return url($url);  // Generar URL completa
+            });
+
+        $pdf = PDF::loadView('virasoro.estudioPdf', [
+            'estudio' => $estudio,
+            'imagenes' => $imagenes
+        ]);
+
+        $fecha = Carbon::createFromFormat('d/m/Y', $estudio->fecha)->format('d-m-Y');
+
+        return $pdf->stream($estudio->paciente_apellido . " " . $estudio->paciente_nombre . " (" . $estudio->tipo_estudio_nombre . " " . $fecha . ').pdf');
+    }
+
+    public function estudioEliminar($id) {
+
+        DB::table('estudios')->where('id', $id)->delete();
+        DB::table('multimedias')->where('id_estudio', $id)->delete();
+
+        $folderPath = public_path('uploads/estudios/' . $id);
+        File::deleteDirectory($folderPath);
+
+        return redirect()->back()->with('deleted', 'Estudio eliminado correctamente ✔');
+    }
+
+        
 }

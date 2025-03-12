@@ -167,3 +167,14 @@ textarea {
 .form-nuevo-estudio {
     width: 1000px;
 }
+
+
+.modificar {
+    background-color: #970000;
+    color: white;
+    border-radius: 8px;
+    padding-inline: 15px;
+    padding-block: 10px;
+    font-weight: 300;
+    margin-top: 1.8rem;
+}

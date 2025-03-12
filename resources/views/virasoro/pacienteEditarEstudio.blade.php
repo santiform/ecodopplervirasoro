@@ -4,44 +4,44 @@
 <link rel="stylesheet" href="{{ asset('css/alertas.css') }}">
 
 <div class="contenedor">
-    <h1 style="font-weight: 400; font-size: 28px">Agregando "{{$tipo_estudio->nombre}}" para: </h1>
+    <h1 style="font-weight: 400; font-size: 28px">Editando "{{$tipo_estudio->nombre}}" para: </h1>
     <h1 style="color: white;margin-top: -1.5rem" >{{ $paciente->apellido }} {{ $paciente->nombre }}</h1>
 
-    @if (session('success'))
-        <div class="session-success">
-            {{ session('success') }}
+    @if (session('edited'))
+        <div class="session-edited">
+            {{ session('edited') }}
         </div>
     @endif
 
-    <form class="form-nuevo-estudio" id="pacienteForm" action="{{ route('pacienteNuevoEstudio3') }}" method="POST"
+    <!-- Cambia la URL de la acción y el método para editar -->
+    <form class="form-nuevo-estudio" id="pacienteForm" action="{{ route('pacienteEditarEstudio2', $estudio->id) }}" method="POST"
         enctype="multipart/form-data" onsubmit="return abrirModal(event)">
 
         @csrf
+        @method('PUT')  <!-- Asegúrate de usar PUT para una actualización -->
 
         <input type="hidden" name="paciente_id" value="{{ $paciente->id }}">
+        <input type="hidden" name="estudio_id" value="{{ $estudio->id }}">
 
-        <input type="hidden" name="estudio_id" value="{{ $tipo_estudio->id }}">
-         
+        <!-- Pre-carga los datos actuales en los campos del formulario -->
         <label for="fecha">Fecha de estudio</label>
-        <input type="date" id="fecha" name="fecha" required>
+        <input type="date" id="fecha" name="fecha" value="{{ $estudio->fecha }}" required>
 
         <label for="solicitante">Médico solicitante</label>
-        <input type="text" id="solicitante" name="solicitante" required>
+        <input type="text" id="solicitante" name="solicitante" value="{{ $estudio->solicitante }}" required>
 
         <label for="informe">Informe ({{$tipo_estudio->nombre}})</label>
-        <textarea id="informe" name="informe" rows="10" required>{{ $tipo_estudio->protocolo }}</textarea>
+        <textarea id="informe" name="informe" rows="10" required>{{ $estudio->informe }}</textarea>
 
-        <!-- Campo para seleccionar múltiples archivos -->
-        <label for="archivos">Archivos mulimedia</label>
-        <input type="file" id="archivos" name="archivos[]" multiple required>
+        <div class="modificar" >Si lo que deseás es modificar el tipo de estudio, o alguna de las imágenes: tenés que eliminar este estudio y subirlo de nuevo al sistema.</div>
 
-        <button type="submit" id="submitButton">GUARDAR</button>
+        <button type="submit" id="submitButton">ACTUALIZAR</button>
     </form>
 </div>
 
 <div class="modal">
     <div class="modal-content">
-        <p>¿Deseas guardar <b>{{$tipo_estudio->nombre}}</b> para <b>{{ $paciente->apellido }} {{ $paciente->nombre }}</b>?</p>
+        <p>¿Deseas guardar los cambios en <b>{{$tipo_estudio->nombre}}</b> para <b>{{ $paciente->apellido }} {{ $paciente->nombre }}</b>?</p>
         <button class="confirmar" onclick="confirmarAccion()">Sí, Guardar</button>
         <button class="cancelar" onclick="cerrarModal()">No, Cancelar</button>
     </div>

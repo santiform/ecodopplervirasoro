@@ -1,0 +1,107 @@
+.contenedor {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            padding: 20px;
+            padding-bottom: 0;
+            margin-bottom: 3.5rem;
+            margin-top: 2rem;
+        }
+
+/* Alineación en pantallas grandes */
+        @media (min-width: 768px) {
+            .contenedor {
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: flex-start;
+            }
+        }
+
+
+
+        /* Estilos de los botones */
+        .botones {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .boton {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: #00b8e1; /* Verde */
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            cursor: pointer;
+            font-size: 18px;
+            border-radius: 8px;
+            transition: background 0.3s ease;
+            text-decoration: none;
+            text-align: center;
+        }
+
+        .boton:hover {
+            background: white;
+            color: #00b8e1;
+        }
+
+        .boton i {
+            font-size: 24px;
+        }        
+
+        /* Estilos del legajo */
+        .legajo {
+            padding: 25px;
+            border-radius: 8px;
+            background: #65d0e8; /* Azul claro */
+            flex: 1;
+        }
+
+        .legajo h1 {
+            margin-bottom: 10px;
+            color: #056074;
+            margin-top: 0;
+        }
+
+        .legajo p {
+            margin: 5px 0;
+            color: #056074;
+            font-weight: 400;
+            font-size: 20px;
+        }
+
+        .legajo strong {
+            color: #056074;
+        }
+
+        .item {
+            text-align: center;
+            font-weight: 500;
+        }
+
+        .hr {
+            color: #056074 !important;
+            outline-color: white !important;
+            outline: white !important;
+            background: #056074;
+            background-color: #056074;
+            border-radius: 1px solid #056074;
+        }
+
+        .contenedor-imagenes {
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* Centra las imágenes horizontalmente */
+        }
+
+        .contenedor-imagenes img {
+            max-width: 100%;  /* No será más grande que su tamaño original */
+            width: auto;      /* Mantiene su tamaño si es más pequeño que el contenedor */
+            height: auto;     /* Mantiene la proporción */
+            display: block;   /* Evita espacios en blanco debajo */
+            margin-bottom: 10px; /* Espacio entre imágenes */
+        }
+
+        
