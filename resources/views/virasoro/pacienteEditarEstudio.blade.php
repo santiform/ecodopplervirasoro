@@ -33,7 +33,7 @@
         <label for="informe">Informe ({{$tipo_estudio->nombre}})</label>
         <textarea id="informe" name="informe" rows="10" required>{{ $estudio->informe }}</textarea>
 
-        <div class="modificar" >Si lo que deseás es modificar el tipo de estudio, o alguna de las imágenes: tenés que eliminar este estudio y subirlo de nuevo al sistema.</div>
+        <div class="modificar" >Si lo que deseas es modificar el tipo de estudio, o algún multimedia (video o imagen): tenés que eliminar este estudio y subirlo de nuevo al sistema.</div>
 
         <button type="submit" id="submitButton">ACTUALIZAR</button>
     </form>

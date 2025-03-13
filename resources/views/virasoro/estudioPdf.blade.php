@@ -65,8 +65,11 @@
 
     <div class="imagenes-container">
         @foreach ($imagenes as $imagen)
-            <img src="{{ $imagen }}" class="imagen">
+            @if ($imagen->tipo !== 'video')  <!-- Si no es un video, muestra la imagen -->
+                <img src="{{ url($imagen->url) }}" class="imagen">
+            @endif
         @endforeach
+
     </div>
 
 </body>

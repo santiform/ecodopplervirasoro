@@ -29,6 +29,7 @@ h1 {
     color: #A5E7F6;
     font-size: 40px;
     font-weight: 500;
+    margin-top: 0.8rem;
 }
 
 h2 {
@@ -72,7 +73,7 @@ h2 {
 
 .button-item p {
     color: #00DCF1;
-    font-size: 22px;
+    font-size: 21px;
     font-weight: 500;
     margin-top: 16px; /* Espacio entre botón y texto */
 }
@@ -99,7 +100,7 @@ h2 {
 }
 
 .round-button i {
-    font-size: 70px;
+    font-size: 65px;
 }
 
 /* Responsividad */

@@ -64,6 +64,7 @@
     <table id="table" class="display responsive nowrap" cellspacing="0" width="90%">
         <thead>
             <tr>
+                <th>ID Estudio</th>
                 <th>Tipo de Estudio</th>
                 <th>Fecha</th>
                 <th>Solicitante</th>
@@ -73,6 +74,7 @@
         <tbody>
             @foreach($estudios as $estudio)
             <tr>
+                <td>{{ $estudio->id }}</td>
                 <td>{{ $estudio->estudio_nombre }}</td>
                 <td>{{ $estudio->fecha }}</td>
                 <td>{{ $estudio->solicitante }}</td>

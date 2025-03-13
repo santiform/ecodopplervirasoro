@@ -18,7 +18,7 @@
     
     <!-- Nombre de la aplicación -->
     <div class="navbar-title">
-        <p class="app" >EcodopplerVirasoro</p>
+        <a style="color: white; text-decoration: none" href="{{ route('index') }}"><p class="app">EcodopplerVirasoro</p></a>
         <p class="version">Versión de App: 1.0</p>
     </div>
     

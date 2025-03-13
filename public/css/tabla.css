@@ -148,11 +148,12 @@ th.sorting {
 
 /* Cambiar el color del texto en los inputs de búsqueda */
 .dataTables_filter input {
-    color: white !important; /* Texto blanco en el input */
-    background-color: #056074 !important; /* Fondo oscuro para el input */
+    color: black !important; /* Texto blanco en el input */
+    background-color: white !important; /* Fondo oscuro para el input */
     border: 1px solid #00B8E1; /* Borde celeste para el input */
     margin-bottom: 1rem;
 }
+
 
 .dataTables_length select {
     background-color: white !important;

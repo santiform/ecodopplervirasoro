@@ -146,15 +146,7 @@ class VirasoroController extends Controller
 
     public function pacienteNuevoEstudio3(Request $request) {
         // Validar los datos recibidos
-        $request->validate([
-            'paciente_id' => 'required|exists:pacientes,id',
-            'estudio_id' => 'required|exists:tipos_estudios,id',
-            'fecha' => 'required|date',
-            'solicitante' => 'required|string|max:255',
-            'informe' => 'required|string',
-            'archivos' => 'nullable|array',  // Aceptar múltiples archivos
-            'archivos.*' => 'mimes:jpg,jpeg,png|max:10240', // Aceptar imágenes
-        ]);
+
 
         // Guardar el nuevo estudio en la base de datos
         $estudio = DB::table('estudios')->insertGetId([
@@ -187,9 +179,12 @@ class VirasoroController extends Controller
 
                 // Guardar la URL del archivo en la tabla 'multimedias'
                 $url = 'uploads/estudios/' . $estudio . '/' . $filename;
+
+                // Insertar en la base de datos, ahora guardando archivos de imágenes y videos
                 DB::table('multimedias')->insert([
                     'id_estudio' => $estudio, // Asociar el archivo con el ID del estudio
                     'url' => $url,
+                    'tipo' => in_array($extension, ['jpg', 'jpeg', 'png']) ? 'imagen' : 'video', // Determinar el tipo de archivo
                     'created_at' => now(),
                     'updated_at' => now(),
                 ]);
@@ -199,6 +194,7 @@ class VirasoroController extends Controller
         // Redirigir a la página de pacientes con un mensaje de éxito
         return redirect()->route('pacientes')->with('estudioSuccess', 'Estudio agregado correctamente ✔');
     }
+
 
     public function pacienteEditarEstudio($id) {
 
@@ -274,16 +270,12 @@ class VirasoroController extends Controller
             )
             ->first();
 
-        $estudio->fecha = Carbon::parse($estudio->fecha)->format('d/m/Y');    
-
-        $baseUrl = asset('');    
+        $estudio->fecha = Carbon::parse($estudio->fecha)->format('d/m/Y');     
 
         $imagenes = DB::table('multimedias')
             ->where('id_estudio', $id)
-            ->pluck('url')
-            ->map(function($url) use ($baseUrl) {
-                return url($url);  // Generar URL completa
-            });
+            ->select('url', 'tipo')
+            ->get();
 
         $pdf = PDF::loadView('virasoro.estudioPdf', [
             'estudio' => $estudio,
@@ -308,16 +300,12 @@ class VirasoroController extends Controller
             )
             ->first();
 
-        $estudio->fecha = Carbon::parse($estudio->fecha)->format('d/m/Y');    
-
-        $baseUrl = asset('');    
+        $estudio->fecha = Carbon::parse($estudio->fecha)->format('d/m/Y');      
 
         $imagenes = DB::table('multimedias')
             ->where('id_estudio', $id)
-            ->pluck('url')
-            ->map(function($url) use ($baseUrl) {
-                return url($url);  // Generar URL completa
-            });
+            ->select('url', 'tipo')
+            ->get();
 
         $pdf = PDF::loadView('virasoro.estudioPdf', [
             'estudio' => $estudio,
@@ -338,6 +326,22 @@ class VirasoroController extends Controller
         File::deleteDirectory($folderPath);
 
         return redirect()->back()->with('deleted', 'Estudio eliminado correctamente ✔');
+    }
+
+    public function estudioEliminarB($id) {
+
+        $id_paciente = DB::table('estudios')
+                ->where('id', $id)
+                ->value('id_paciente');       
+
+        DB::table('estudios')->where('id', $id)->delete();
+        DB::table('multimedias')->where('id_estudio', $id)->delete();
+
+        $folderPath = public_path('uploads/estudios/' . $id);
+        File::deleteDirectory($folderPath);
+
+        return redirect()->route('pacienteLegajo', ['id' => $id_paciente])
+                 ->with('deleted', 'Estudio eliminado correctamente ✔');
     }
 
         

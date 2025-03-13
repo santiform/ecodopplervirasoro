@@ -58,6 +58,8 @@ Route::middleware('auth')->group(function () {
 
     Route::delete('/estudio/{id}/eliminar', [VirasoroController::class, 'estudioEliminar'])->name('estudioEliminar');
 
+    Route::delete('/estudio/{id}/estudioEliminarB', [VirasoroController::class, 'estudioEliminarB'])->name('estudioEliminarB');
+
 
 
 

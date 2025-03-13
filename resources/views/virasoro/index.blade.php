@@ -54,25 +54,31 @@
                     <div class="button-item">
                         <a href="{{ route('pacientes') }}">
                             <button class="round-button"><i class="fa-solid fa-user"></i></button>
-                            <p>Pacientes</p>
                         </a>
+                        <p>Pacientes</p>
                     </div>
                     <div class="button-item">
                         <a href="{{ route('pacientesNuevo') }}">
                             <button class="round-button"><i class="fa-solid fa-user-plus"></i></button>
-                            <p>Nuevo Paciente</p>
-                        </a>    
+                        </a> 
+                        <p>Nuevo Paciente</p>   
                     </div>                    
                     <div class="button-item">
-                        <button class="round-button"><i class="fa-solid fa-user-doctor"></i></button>
-                        <p>Nuevo Estudio</p>
+                        <a href="{{ route('pacientesNuevo') }}">
+                            <button class="round-button"><i class="fa-solid fa-user-doctor"></i></button>
+                        </a>
+                         <p>Nuevo Estudio</p>
                     </div>
                     <div class="button-item">
-                        <button class="round-button"><i class="fa-solid fa-file-invoice"></i></button>
+                        <a href="{{ route('pacientesNuevo') }}">
+                            <button class="round-button"><i class="fa-solid fa-user-doctor"></i></button>
+                        </a>
                         <p>Estudios Realizados</p>
                     </div>
                     <div class="button-item">
-                        <button class="round-button"><i class="fa-solid fa-notes-medical"></i></button>
+                        <a href="{{ route('pacientesNuevo') }}">
+                            <button class="round-button"><i class="fa-solid fa-user-doctor"></i></button>
+                        </a>
                         <p>Nuevo Estudio</p>
                     </div>
                 </div>
