@@ -25,18 +25,17 @@ table a:hover {
 /* Estilo para el buscador */
 .dataTables_filter input {
     background-color: #056074; /* Color para el buscador */
-    border: 1px solid white; /* Borde blanco */
+    border: 2px solid white !important; /* Borde blanco */
     color: white; /* Letra blanca */
     padding: 6px 10px;
     font-size: 14px;
     border-radius: 4px;
-
 }
 
 /* Estilo del input del buscador al enfocarlo */
 .dataTables_filter input:focus {
     outline: none;
-    border-color: #00B8E1; /* Borde azul claro al enfocarse */
+    border: 2px solid #00B8E1 !important; /* Borde azul claro al enfocarse */
 }
 
 /* Estilo de las cabeceras */

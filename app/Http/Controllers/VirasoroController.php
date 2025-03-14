@@ -6,10 +6,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\File;
-
-
+use App\Services\WhatsAppService;
+use Illuminate\Support\Str;
 use PDF;
-
+use Twilio\Rest\Client;
 
 class VirasoroController extends Controller
 {
@@ -58,7 +58,7 @@ class VirasoroController extends Controller
         ]);
 
         // Redirigir con mensaje de éxito
-        return redirect()->back()->with('success', 'Paciente agregado correctamente ✔');
+        return redirect()->route('pacientes')->with('estudioSuccess', 'Paciente agregado correctamente ✔');
     }    
 
     public function pacienteLegajo($id) {
@@ -111,7 +111,7 @@ class VirasoroController extends Controller
                 'updated_at' => now()
             ]);
 
-        return redirect()->back()->with('edited', 'Paciente editado correctamente ✔');
+        return redirect()->route('pacientes')->with('edited', 'Paciente editado correctamente ✔');
  
     }
 
@@ -145,16 +145,28 @@ class VirasoroController extends Controller
     }
 
     public function pacienteNuevoEstudio3(Request $request) {
-        // Validar los datos recibidos
 
+        function generarTokenUnico($longitud = 8)
+        {
+            do {
+                $token = Str::random($longitud);
+                $existe = DB::table('estudios')->where('token', $token)->exists();
+            } while ($existe); // Si ya existe en la BD, genera otro
 
-        // Guardar el nuevo estudio en la base de datos
+            return $token;
+        }
+
+        // Generamos un token único
+        $token = generarTokenUnico(8);
+
+        // Guardamos el estudio con un token seguro
         $estudio = DB::table('estudios')->insertGetId([
             'id_paciente' => $request->input('paciente_id'),
             'id_tipo_estudio' => $request->input('estudio_id'),
             'fecha' => $request->input('fecha'),
             'solicitante' => $request->input('solicitante'),
             'informe' => $request->input('informe'),
+            'token' => $token, // Guardamos el token único
             'created_at' => now(),
             'updated_at' => now(),
         ]);
@@ -195,6 +207,35 @@ class VirasoroController extends Controller
         return redirect()->route('pacientes')->with('estudioSuccess', 'Estudio agregado correctamente ✔');
     }
 
+    public function token($token) {
+
+        $id = DB::table('estudios')
+            ->where('token', $token)
+            ->value('id');
+
+        $estudio = DB::table('estudios')
+            ->join('pacientes', 'estudios.id_paciente', '=', 'pacientes.id')
+            ->join('tipos_estudios', 'estudios.id_tipo_estudio', '=', 'tipos_estudios.id')
+            ->where('estudios.id', $id)
+            ->select(
+                'estudios.*', 
+                'pacientes.apellido as paciente_apellido', 
+                'pacientes.nombre as paciente_nombre', 
+                'tipos_estudios.nombre as tipo_estudio_nombre'
+            )
+            ->first();
+
+        $estudio->fecha = Carbon::parse($estudio->fecha)->format('d/m/Y');      
+
+        $baseUrl = asset('');    
+
+        $imagenes = DB::table('multimedias')
+                  ->where('id_estudio', $id)
+                  ->pluck('url')
+                  ->map(fn($url) => $baseUrl . $url);
+
+        return view('virasoro.vistaExterna', compact('estudio', 'imagenes'));
+    }
 
     public function pacienteEditarEstudio($id) {
 
@@ -228,7 +269,7 @@ class VirasoroController extends Controller
                 'updated_at' => now(),
             ]);
 
-        return redirect()->back()->with('edited', 'Estudio editado correctamente ✔');    
+        return redirect()->route('pacientes')->with('edited', 'Estudio editado correctamente ✔');    
 
     }    
 
@@ -325,7 +366,7 @@ class VirasoroController extends Controller
         $folderPath = public_path('uploads/estudios/' . $id);
         File::deleteDirectory($folderPath);
 
-        return redirect()->back()->with('deleted', 'Estudio eliminado correctamente ✔');
+        return redirect()->route('pacientes')->with('deleted', 'Estudio eliminado correctamente ✔');
     }
 
     public function estudioEliminarB($id) {
@@ -344,5 +385,139 @@ class VirasoroController extends Controller
                  ->with('deleted', 'Estudio eliminado correctamente ✔');
     }
 
+    // Inyectamos el servicio WhatsAppService
+    protected $whatsAppService;
+
+    public function __construct(WhatsAppService $whatsAppService)
+    {
+        // Inicializamos el servicio
+        $this->whatsAppService = $whatsAppService;
+    }
+
+    public function wpp($id) {
+
+        $estudio = DB::table('estudios')
+            ->join('tipos_estudios', 'estudios.id_tipo_estudio', '=', 'tipos_estudios.id')
+            ->where('estudios.id', $id)
+            ->select('estudios.*', 'tipos_estudios.nombre as estudio_nombre', 'estudios.id_paciente')
+            ->first();
+
+        $paciente = DB::table('pacientes')->where('id', $estudio->id_paciente)->first();
+
+        $fecha_estudio = Carbon::parse($estudio->fecha)->format('d/m/Y');
+
+        $token_estudio = $estudio->token;
+
+        $sid    = "ACe9e8affbcd53f8a0125073a63fcd8922";  // Reemplaza con tu SID
+        $token  = "77b7f1a959cc9c11f6c64ddfc8b4ee53";    // Reemplaza con tu Auth Token
+        $twilio = new Client($sid, $token);
+
+        $numeroDestino = "whatsapp:" . $paciente->celular;
+
+        $numeroFrom = "whatsapp:+14155238886";
+
+        $mensaje = sprintf(
+            "💻 *ECODOPPLERVIRASORO* 💻\n\n".      // Título del estudio
+            "📄 *Estudio:* %s\n".         // Nombre del estudio (colocado abajo de los guiones)
+            "👤 *Paciente:* %s %s\n".
+            "🪪 *DNI:* %s\n".
+            "📅 *Fecha:* %s\n".
+            "------------------------------------------------------------------\n".      // Línea de guiones
+            "🔗 *Podés visualizar el estudio en el siguiente link:* \n%s\n\n",  // Salto de línea antes del link
+            $estudio->estudio_nombre,  // Nombre del estudio
+            $paciente->nombre, 
+            $paciente->apellido, 
+            $paciente->dni, 
+            $fecha_estudio, 
+            url("/token/{$token_estudio}") // Link al estudio con el token
+        );
+
+        // Enviar el mensaje a través de Twilio WhatsApp API
+        try {
+            $message = $twilio->messages
+                ->create($numeroDestino, // Número de destino
+                    [
+                        "from" => $numeroFrom, // Número Twilio habilitado para WhatsApp
+                        "body" => $mensaje      // El mensaje a enviar
+                    ]
+                );
+            
+            return redirect()->back()->with('wpp-success', 'Estudio enviado por WhatsApp correctamente ✔');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('wpp-error', '❌ Error al enviar el mensaje: ' . $e->getMessage());
+        }
+    }
+
+    public function tiposEstudio()
+    {
+        $tipos_estudios = DB::table('tipos_estudios')
+            ->get();
+
+        return view('virasoro.tiposEstudios', compact('tipos_estudios'));
+    }
+
+    public function tiposEstudioNuevo()
+    {
+        return view('virasoro.tiposEstudiosNuevo');
+    }
+
+    public function tiposEstudioNuevoGuardar(Request $request) {
+
+        $validated = $request->validate([
+            'nombre' => 'required|string|max:255',  // Nombre requerido, tipo string, máximo 255 caracteres
+            'protocolo' => 'required|string|max:5000',  // Protocolo requerido, tipo string, máximo 5000 caracteres
+        ]);
+
+        DB::table('tipos_estudios')->insert([
+            'nombre' => $request->nombre,
+            'protocolo' => $request->protocolo,
+        ]);
+
+        // Redirigir con mensaje de éxito
+        return redirect()->back()->with('success', 'Tipo de estudio agregado correctamente ✔');
+    }    
+
+    public function tipoEstudioEditar($id) {
+
+        $tipo_estudio = DB::table('tipos_estudios')->where('id', $id)->first();
+
+        return view('virasoro.tipoEstudioEditar', compact('tipo_estudio'));
+    }
+
+    public function tipoEstudioEditarGuardar(Request $request, $id) {
+        // Validar datos
+        $validated = $request->validate([
+            'nombre' => 'required|string|max:255',  // Nombre requerido, tipo string, máximo 255 caracteres
+            'protocolo' => 'required|string|max:5000',  // Protocolo requerido, tipo string, máximo 5000 caracteres
+        ]);
+
+        // Actualizar datos en la tabla 'pacientes'
+        $actualizado = DB::table('tipos_estudios')
+            ->where('id', $id) // Buscar por ID
+            ->update([
+                'nombre' => $request->nombre,
+                'protocolo' => $request->protocolo,
+                'updated_at' => now()
+            ]);
+
+        return redirect()->route('tiposEstudio')->with('edited', 'Tipo de estudio editado correctamente ✔');
+ 
+    }
+
+    public function tipoEstudioEliminar($id) {
+        // Buscar el paciente antes de eliminar
+        $paciente = DB::table('tipos_estudios')->where('id', $id)->first();
+
+        // Eliminar el paciente
+        DB::table('tipos_estudios')->where('id', $id)->delete();
+
+        // Redirigir con mensaje de éxito
+        return redirect()->route('tiposEstudio')->with('deleted', 'Tipo de estudio eliminado correctamente ✔');
+    }
+
+
+
+
+    
         
 }

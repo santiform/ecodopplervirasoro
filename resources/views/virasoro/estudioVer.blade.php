@@ -4,10 +4,25 @@
 <link rel="stylesheet" href="{{ asset('css/alertas.css') }}">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/glightbox/dist/css/glightbox.min.css">
 
+<style type="text/css">
+    .session-success {
+        background-color: #009136;
+        color: white;
+        margin-bottom: -0.01rem!important;
+        border: 1px solid white;
+    }
+</style>
+
 <div class="contenedor">
 
     <div class="legajo">
         <h1>{{ $estudio->tipo_estudio_nombre }} - {{ $estudio->paciente_nombre }} {{ $estudio->paciente_apellido }}</h1>
+
+        @if (session('wpp-success'))
+            <div class="session-success">
+                {{ session('wpp-success') }}
+            </div>
+        @endif
 
         <div style="height: 0.5rem;" ></div>
 
@@ -66,7 +81,7 @@
     <div class="botones">
         <a href="{{ route('estudioDescargar', ['id' => $estudio->id]) }}" class="boton"><i class="fa-solid fa-download"></i> Descargar</a>
         <a href="{{ route('estudioImprimir', ['id' => $estudio->id]) }}" class="boton"><i class="fa-solid fa-print"></i> Imprimir</a>
-        <a href="{{ route('pacienteNuevoEstudio', ['id' => $estudio->id]) }}" class="boton"><i class="fa-brands fa-whatsapp"></i> Enviar por WhatsApp</a>
+        <a href="{{ route('wpp', ['id' => $estudio->id]) }}" class="boton"><i class="fa-brands fa-whatsapp"></i> Enviar por WhatsApp</a>
         <a href="{{ route('estudioEliminarB', ['id' => $estudio->id]) }}"  class="boton" 
                            class="btn-eliminar" 
                            onclick="event.preventDefault(); mostrarModal(this)">

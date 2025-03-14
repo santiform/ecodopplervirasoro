@@ -18,13 +18,13 @@
     
     <!-- Nombre de la aplicación -->
     <div class="navbar-title">
-        <a style="color: white; text-decoration: none" href="{{ route('index') }}"><p class="app">EcodopplerVirasoro</p></a>
-        <p class="version">Versión de App: 1.0</p>
+        <a style="color: white; text-decoration: none" href="{{ route('index') }}"><p class="app">EcodopplerVirasoro</p>
+        <p class="version">Versión del sistema: 0.5.0</p></a>
     </div>
     
     <!-- Botón de "Inicio" -->
     <a href="{{ route('index') }}" class="navbar-btn">
-        <i class="fas fa-home"></i> Inicio
+        <i class="fa-solid fa-screwdriver-wrench"></i> Soporte
     </a>
 
 </header>

@@ -64,22 +64,22 @@
                         <p>Nuevo Paciente</p>   
                     </div>                    
                     <div class="button-item">
-                        <a href="{{ route('pacientesNuevo') }}">
-                            <button class="round-button"><i class="fa-solid fa-user-doctor"></i></button>
+                        <a href="{{ route('tiposEstudio') }}">
+                            <button class="round-button"><i class="fa-solid fa-stethoscope"></i></button>
                         </a>
-                         <p>Nuevo Estudio</p>
+                        <p>Tipos de estudios</p>
+                    </div>
+                    <div class="button-item">
+                        <a href="{{ route('tiposEstudioNuevo') }}">
+                            <button class="round-button"><i class="fa-solid fa-notes-medical"></i></button>
+                        </a>
+                        <p>Nuevo tipo de estudio</p>
                     </div>
                     <div class="button-item">
                         <a href="{{ route('pacientesNuevo') }}">
-                            <button class="round-button"><i class="fa-solid fa-user-doctor"></i></button>
+                            <button class="round-button"><i class="fa-solid fa-screwdriver-wrench"></i></button>
                         </a>
-                        <p>Estudios Realizados</p>
-                    </div>
-                    <div class="button-item">
-                        <a href="{{ route('pacientesNuevo') }}">
-                            <button class="round-button"><i class="fa-solid fa-user-doctor"></i></button>
-                        </a>
-                        <p>Nuevo Estudio</p>
+                        <p>Soporte</p>
                     </div>
                 </div>
             </div>

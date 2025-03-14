@@ -19,6 +19,12 @@
         </div>
     @endif
 
+    @if (session('edited'))
+        <div class="session-edited">
+            {{ session('edited') }}
+        </div>
+    @endif
+
     @if (session('estudioSuccess'))
         <div class="session-success">
             {{ session('estudioSuccess') }}
